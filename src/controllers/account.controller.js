@@ -1,5 +1,5 @@
 const accountModel = require('../models/account.model');
-const { generateAccountNumber } = require('../utils/accountNumber');
+const generateAccountNumber = require('../utils/accountNumber.util');
 
 const createAccountController = async (req, res) => {
 
