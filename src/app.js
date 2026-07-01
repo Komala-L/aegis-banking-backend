@@ -9,11 +9,15 @@ app.use(cookieParser());
 // Import route modules
 const authRoutes = require('./routes/auth.routes');
 const accountRoutes = require('./routes/account.routes');
+const transactionRoutes = require('./routes/transaction.routes');
 
 // Authentication routes
 app.use('/api/auth', authRoutes);
 
 // Account routes
 app.use('/api/accounts', accountRoutes);
+
+// Transaction routes
+app.use('/api/transactions', transactionRoutes);
 
 module.exports = app;

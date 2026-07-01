@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const { ACCOUNT_STATUS } = require('../constants/accountStatus');
+const { ACCOUNT_TYPE } = require('../constants/accountType');
 
 const accountSchema = new mongoose.Schema({
     user: {
@@ -16,8 +18,8 @@ const accountSchema = new mongoose.Schema({
     accountType: {
         type: String,
         enum: {
-            values: ['Savings', 'Current'],
-            message: 'Account type can be either Savings or Current'
+            values: Object.values(ACCOUNT_TYPE),
+            message: `Account type can be either ${Object.values(ACCOUNT_TYPE).join(", ")}`
         },
         required: [true, 'Account type is required']
     },
@@ -34,10 +36,10 @@ const accountSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: {
-            values: ['Active', 'Frozen', 'Closed'],
-            message: 'Status can be either Active, Frozen or Closed'
+            values: Object.values(ACCOUNT_STATUS),
+            message: `Status can be ${Object.values(ACCOUNT_STATUS).join(", ")}`
         },
-        default: 'Active'
+        default: ACCOUNT_STATUS.ACTIVE
     }
 }, {
     timestamps: true

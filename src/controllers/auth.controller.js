@@ -1,6 +1,5 @@
 const userModel = require("../models/user.model");
-const jwt = require("jsonwebtoken");
-const emailService = require("../services/email.service");
+const { sendRegistrationEmail } = require("../services/email/templates/registration.template");
 const { generateToken } = require("../utils/jwt");
  
 /**
@@ -21,7 +20,13 @@ const userRegisterController = async (req, res) => {
 
         const token = generateToken(user._id);
     
-        res.cookie("token", token);
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict"
+        });
+
+        await sendRegistrationEmail(user.email, user.name);
 
         res.status(201).json({
             user: {
@@ -31,8 +36,6 @@ const userRegisterController = async (req, res) => {
             },
             token
         })
-
-        await emailService.sendRegistrationEmail(user.email, user.name);
     }
     catch (error) {
         return res.status(500).json({ message: "Internal server error", status: "failed" });
@@ -60,7 +63,11 @@ const userLoginController = async (req, res) => {
 
         const token = generateToken(user._id);
 
-        res.cookie("token", token);
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict"
+        });
 
         res.status(200).json({
             user: {
