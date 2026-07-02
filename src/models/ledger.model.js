@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { ENTRY_TYPE } = require('../constants/entryType');
+const { LEDGER_ENTRY_TYPE } = require('../constants/ledgerEntryType');
 
 const ledgerSchema = new mongoose.Schema({
     account: {
@@ -25,7 +25,7 @@ const ledgerSchema = new mongoose.Schema({
     entryType: {
         type: String,
         enum: {
-            values: Object.values(ENTRY_TYPE),
+            values: Object.values(LEDGER_ENTRY_TYPE),
             message: 'Ledger entry type must be either DEBIT or CREDIT'
         },
         required: [true, 'Ledger entry type is required'],
@@ -54,7 +54,6 @@ ledgerSchema.pre("save", function () {
 });
 
 ledgerSchema.index({ account: 1, createdAt: 1 });
-ledgerSchema.index({ transaction: 1 });
 
 const ledgerModel = mongoose.model('ledger', ledgerSchema);
 
